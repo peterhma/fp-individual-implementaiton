@@ -50,6 +50,8 @@
         // send title, points, and author name to the server
         var data_to_send = {
           "title": $("#myTitle").val()
+          "author": $('#authorname').text()
+          "points": JSON.stringify(points);
         };
 
         // This ajax request sends a POST request to the server
