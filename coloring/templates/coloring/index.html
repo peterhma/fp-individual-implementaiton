@@ -30,7 +30,7 @@
         <br></br>
         
         <h4><label for="myTitle">Drawing Title</label></h4>
-        <textarea id="myTitle"></textarea>
+        <textarea id="myTitle">{{title}}</textarea>
 
         <br></br>
         
@@ -43,7 +43,10 @@
     
     window.onload = function() {
 
-      var points = []; 
+      var title = "{{title|safe}}";
+      var points = {{drawing|safe}}; 
+    
+
     
       $('#save').on("click", function(){
 
@@ -78,13 +81,25 @@
       function basicDrawingTool(){
         
     		var tool = new paper.Tool();
-    		var path;
-        
+
+            
+       var path;
+        for (let i = 0; i < points.length; i++) {
+          if (points[i] === "down"){
+             path = new paper.Path();
+          }
+          path.strokeColor = 'black';
+          path.add(points[i]);
+        }
+   
+      	
     		// Define a mousedown and mousedrag handler
+        
     		tool.onMouseDown = function(event) {
     			path = new paper.Path();
     			path.strokeColor = 'black';
     			path.add(event.point);
+          points.push("down");
           points.push([event.point.x, event.point.y]); 
     		}
     

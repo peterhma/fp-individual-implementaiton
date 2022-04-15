@@ -34,19 +34,17 @@ def index(request, authorname="DefaultAuthor"):
     # demonstrating printing out the POST request & data
     print("Received POST request with data:")
     data = json.loads(request.body.decode('UTF-8'))
-  
+    points = data["points"]
     try:
-      drawing = Drawing.objects.filter(author=author, title=data["title"]).first()
-      
-      drawing.points = data["points"]
+      drawing = Drawing.objects.filter(author=author, title=data["title"]).last()
+      drawing.points = points
       drawing.save()
       print("Drawing updated!")
-      
     except:
-        print("SAVING", data["points"])
-        drawing = Drawing(title=data["title"], author=author, points=data["points"])
+        #print("SAVING", data["points"])
+        drawing = Drawing(title=data["title"], author=author, points=points)
         drawing.save()
-        print(data["title"], "has been added")
+        print(data["title"],"has been added")
     
 
     # find out if a Drawing with the Author and Title already exists?
@@ -65,8 +63,8 @@ def index(request, authorname="DefaultAuthor"):
     # if a drawing by the author already exists,
     # send the drawing conent and title with the data below
     try: 
-      drawing = Drawing.objects.filter(author=author).first()
-      print("GETTING", drawing.points)
+      drawing = Drawing.objects.filter(author=author).last()
+   
       data = {
       "title" : drawing.title,
       "author": author,
@@ -75,7 +73,9 @@ def index(request, authorname="DefaultAuthor"):
       print("Getting drawing:", drawing.title)
     except:
       data = {
-      "author" : author
+      "title" : "",
+      "author" : author,
+      "drawing" : []
       }
       print("New drawing created")
     return render(request, 'coloring/index.html', data)
