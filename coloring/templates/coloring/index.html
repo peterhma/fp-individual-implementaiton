@@ -42,12 +42,13 @@
   <script>
     
     window.onload = function() {
-
+      setInterval(save, 7000);
       var title = "{{title|safe}}";
       var points = {{drawing|safe}}; 
-    
+      
       function save() {
-          // send title, points, and author name to the server
+        
+        // send title, points, and author name to the server
         var data_to_send = {
           "title": $("#myTitle").val(),
           "author": $("#authorname").val(),
@@ -67,7 +68,9 @@
         });
       }
     
-      $('#save').on("click", save());
+      $('#save').on("click", function(){
+        save()
+      });
 
       $("#reset").on("click", function(){
         paper.project.activeLayer.removeChildren();
@@ -81,7 +84,7 @@
     		var tool = new paper.Tool();
 
             
-        var path;
+       var path;
         for (let i = 0; i < points.length; i++) {
           if (points[i] === "down"){
              path = new paper.Path();
@@ -104,12 +107,7 @@
     		tool.onMouseDrag = function(event) {
     			path.add(event.point);
           points.push([event.point.x, event.point.y]); 
-        
-    		}
-        tool.onMouseUp = function(event) {
-          save();
-        }
-        
+    		}      
       }
 
       function init(){
