@@ -10,7 +10,7 @@ class Author(models.Model):
 class Drawing(models.Model):
   title = models.CharField(max_length=50)
   author = models.ForeignKey('Author', on_delete=models.CASCADE,)
-  drawingFile = models.JSONField()
+  points = models.JSONField()
 
   
 

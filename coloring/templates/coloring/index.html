@@ -44,14 +44,14 @@
     window.onload = function() {
 
       var points = []; 
-
+    
       $('#save').on("click", function(){
 
         // send title, points, and author name to the server
         var data_to_send = {
           "title": $("#myTitle").val(),
-          //"author": $("#authorname").val(),
-          //"drawing": points
+          "author": $("#authorname").val(),
+          "points": points
         };
 
         // This ajax request sends a POST request to the server
@@ -79,7 +79,7 @@
         
     		var tool = new paper.Tool();
     		var path;
-    
+        
     		// Define a mousedown and mousedrag handler
     		tool.onMouseDown = function(event) {
     			path = new paper.Path();
