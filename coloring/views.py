@@ -36,6 +36,14 @@ def index(request, authorname="DefaultAuthor"):
     data = json.loads(request.body.decode('UTF-8'))
     print(data)
 
+    try:
+      Drawing.objects.get(author=data.author, title=data.title).update(points=data.points)
+      
+    except:
+        drawing = Drawing(title=data.title, author=data.data, points=data.points)
+        drawing.save()
+    
+
     # find out if a Drawing with the Author and Title already exists?
     # if it doesn't exist, you may create a new Drawing object
     # if it does exist, you may update an existing Drawing object
@@ -51,9 +59,15 @@ def index(request, authorname="DefaultAuthor"):
 
     # if a drawing by the author already exists,
     # send the drawing conent and title with the data below
-    
+    data= json.loads(request.body.decode('UTF-8'))
+    try: 
+       drawing = Drawing.objects.get(author=data.author, title=data.title)
+    except:
+      print("No such title or author") 
     data = {
-      "author": author
+      "title": data.title,
+      "author": author,
+      'drawing': drawing.points,
     }
     
     return render(request, 'coloring/index.html', data)
